@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bbq.tobank.mapper.OrderApplyMapper">
+    <resultMap id="apply" type="com.bbq.tobank.entity.OrderApply">
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+        <result column="money_amount" property="moneyAmount" jdbcType="DECIMAL" />
+        <result column="create_time" property="createTime" jdbcType="BIGINT" />
+        <result column="state" property="status" jdbcType="INTEGER" />
+    </resultMap>
+    <!--插入订单申请记录-->
+    <insert id="insert" parameterType="com.bbq.tobank.entity.OrderApply">
+        insert into order_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="moneyAmount != null">
+                money_amount,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=VARCHAR},
+            <if test="orderId != null">
+                #{orderId, jdbcType=VARCHAR},
+            </if>
+            <if test="moneyAmount != null">
+                #{moneyAmount, jdbcType=DECIMAL},
+            </if>
+            <if test="createTime != null">
+                #{createTime, jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                #{status, jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <!--更新订单申请记录状态-->
+    <update id="updateByPrimaryKey">
+        update order_apply set status = #{status} where id = #{id}
+    </update>
+</mapper>
